@@ -15,4 +15,15 @@ class StudentDataRepository(
         memLocalDataSource.save(student)
     }
 
+    override fun fetch(): List<Student> {
+        return memLocalDataSource.fetch()
+    }
+
+    override fun delete(exp: String) {
+        memLocalDataSource.delete(exp)
+    }
+
+    override fun update(student: Student) {
+        memLocalDataSource.update(student)
+    }
 }

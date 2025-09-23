@@ -11,7 +11,10 @@ import edu.iesam.studentplayground.features.students.data.StudentDataRepository
 import edu.iesam.studentplayground.features.students.data.local.StudentMemLocalDataSource
 import edu.iesam.studentplayground.features.students.data.local.StudentXmlLocalDataSource
 import edu.iesam.studentplayground.features.students.data.remote.StudentApiRemoteDataSource
+import edu.iesam.studentplayground.features.students.domain.DeleteStudentUseCase
+import edu.iesam.studentplayground.features.students.domain.FetchAllStudentUseCase
 import edu.iesam.studentplayground.features.students.domain.SaveStudentUseCase
+import edu.iesam.studentplayground.features.students.domain.UpdateStudentUseCase
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,18 +29,24 @@ class MainActivity : AppCompatActivity() {
         initStudents()
     }
 
-    fun initStudents(){
-        val viewModel = StudentViewModel(
-            SaveStudentUseCase(
-                StudentDataRepository(
-                    StudentApiRemoteDataSource(),
-                    StudentMemLocalDataSource(),
-                    StudentXmlLocalDataSource()
-                )
-            )
+    fun initStudents() {
+        val dataRepository = StudentDataRepository(
+            StudentApiRemoteDataSource(),
+            StudentMemLocalDataSource(),
+            StudentXmlLocalDataSource()
         )
 
+        val viewModel = StudentViewModel(
+            SaveStudentUseCase(dataRepository),
+            FetchAllStudentUseCase(dataRepository),
+            DeleteStudentUseCase(dataRepository),
+            UpdateStudentUseCase(dataRepository)
+        )
+
+
         viewModel.saveClicked("0001", "nombre1 apellido1 apellido1")
-        Log.d("@dev", "Stop")
+        val studentList = viewModel.fetchClicked()
+        viewModel.updateClicked("0001", "nombre2 apellido2 apellido2")
+        viewModel.deleteClicked("0001")
     }
 }

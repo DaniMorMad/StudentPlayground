@@ -10,8 +10,7 @@ class StudentMemLocalDataSource {
     }
 
     fun fetch (): List<Student> {
-        val studentList = dataSource.values.toList()
-        return studentList
+        return dataSource.map { student -> student.value }
     }
 
     fun delete (exp: String) {
@@ -21,4 +20,5 @@ class StudentMemLocalDataSource {
     fun update(student: Student) {
         dataSource.replace(student.exp, student)
     }
+
 }

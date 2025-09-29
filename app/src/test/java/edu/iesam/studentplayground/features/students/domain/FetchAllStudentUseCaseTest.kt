@@ -23,7 +23,10 @@ class FetchAllStudentUseCaseTest {
         val returnedStudents = fetchAllStudentUseCase()
 
         // Then
-        assertEquals(studentList, returnedStudents)
         verify(exactly = 1) { studentRepositoryMock.fetch() }
+        assert(returnedStudents.size == 3)
+        assert(returnedStudents == studentList)
+        assert(returnedStudents[0].exp == "1")
+        assert(returnedStudents[0].name == "a")
     }
 }
